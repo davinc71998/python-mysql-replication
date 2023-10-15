@@ -1,6 +1,17 @@
 version: '3.4'
 
-x-mysql: &mysql57
+x-mysql57: &mysql57
+  environment:
+    MYSQL_ALLOW_EMPTY_PASSWORD: true
+  command: >
+    mysqld
+    --log-bin=mysql-bin.log
+    --server-id=1
+    --binlog-format=row
+    --gtid_mode=on
+    --enforce-gtid-consistency=on
+
+x-mysql80: &mysql80
   environment:
     MYSQL_ALLOW_EMPTY_PASSWORD: true
   command: >
@@ -11,6 +22,7 @@ x-mysql: &mysql57
     --gtid_mode=on
     --enforce-gtid-consistency=on
     --binlog_row_metadata=FULL
+
 
 x-mariadb: &mariadb
   environment:
@@ -24,19 +36,19 @@ x-mariadb: &mariadb
 
 services:
   percona-5.7:
-    <<: *mysql
+    <<: *mysql57
     image: percona:5.7
     ports:
       - "3306:3306"
 
   percona-5.7-ctl:
-    <<: *mysql
+    <<: *mysql57
     image: percona:5.7
     ports:
       - "3307:3306"
 
   percona-8.0:
-    <<: *mysql
+    <<: *mysql80
     image: percona:8.0
     ports:
       - "3309:3306"
