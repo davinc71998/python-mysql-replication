@@ -1,15 +1,16 @@
 version: '3.4'
 
-x-mysql: &mysql
+x-mysql: &mysql57
   environment:
     MYSQL_ALLOW_EMPTY_PASSWORD: true
   command: >
     mysqld
     --log-bin=mysql-bin.log
-    --server-id 1
+    --server-id=1
     --binlog-format=row
     --gtid_mode=on
     --enforce-gtid-consistency=on
+    --binlog_row_metadata=FULL
 
 x-mariadb: &mariadb
   environment:
@@ -19,6 +20,7 @@ x-mariadb: &mariadb
     --server-id=1
     --default-authentication-plugin=mysql_native_password
     --binlog-format=row
+    --binlog_row_metadata=FULL
 
 services:
   percona-5.7:
